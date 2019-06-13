@@ -10,14 +10,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
+            <state relative-caret-position="-520">
               <caret line="99" column="23" lean-forward="true" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="23" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="19">
+                <caret line="1" column="103" selection-start-line="1" selection-start-column="103" selection-end-line="1" selection-end-column="103" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -53,6 +65,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -116,12 +129,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1560407414867</updated>
-      <workItem from="1560407415996" duration="1022000" />
+      <workItem from="1560407415996" duration="1442000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1022000" />
+    <option name="totallyTimeSpent" value="1442000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
@@ -174,11 +187,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
+        <state relative-caret-position="-520">
           <caret line="99" column="23" lean-forward="true" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="23" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="19">
+            <caret line="1" column="103" selection-start-line="1" selection-start-column="103" selection-end-line="1" selection-end-column="103" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
