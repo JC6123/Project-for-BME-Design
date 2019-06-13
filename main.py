@@ -5,7 +5,6 @@ from models.SRCNN import SRCNN_Model, SRCNNConfig
 from models.DeepDenoiseSR import DeepDenoiseSR_Model, DeepDenoiseSRConfig
 from models.ResNetSR import ResNetSR_Model, ResNetSRConfig
 from models.Ultrasound_Image_SRCNN import UISRCNN_Model, UISRCNNConfig
-from models.UISRCNN_Nonbatchnorm import UISRCNN_NonBN_Model, UISRCNN_NonBNConfig
 from models.UISRCNN_kernel_size_optimized import UISRCNN_kso_Config, UISRCNN_kso_Model
 import tensorflow as tf
 import numpy as np
@@ -20,7 +19,7 @@ parser = argparse.ArgumentParser("Train SR model.")
 
 parser.add_argument('--model', default='uisrcnn_kso', type=str, dest='model_type',
                     help='Model type: "birnn", "seq2seq", "srcnn", "ddsrcnn", "resnetsr", '
-                         '"uisrcnn", "uisrcnn_nonbn", "uisrcnn_kso"'
+                         '"uisrcnn", "uisrcnn_kso"'
                     )
 parser.add_argument('--mode', default='train', type=str, dest='mode', help='Mode: train or test.')
 
@@ -40,9 +39,9 @@ args = parser.parse_args()
 
 
 def create_model():
-    if args.model_type not in ('birnn', 'seq2seq', 'srcnn', 'ddsrcnn', 'resnetsr', 'uisrcnn', 'uisrcnn_nonbn', 'uisrcnn_kso'):
+    if args.model_type not in ('birnn', 'seq2seq', 'srcnn', 'ddsrcnn', 'resnetsr', 'uisrcnn', 'uisrcnn_kso'):
         raise ValueError('Model type must be either "birnn", "seq2seq", "srcnn", "ddsrcnn", "resnetsr", '
-                         '"uisrcnn", "uisrcnn_nonbn", "uisrcnn_kso".'
+                         '"uisrcnn", "uisrcnn_kso".'
                          )
 
     if args.mode not in ('train', 'test'):
@@ -87,17 +86,13 @@ def create_model():
         config = UISRCNNConfig()
         config.channels = args.channels
         model = UISRCNN_Model(config)
-    elif args.model_type == 'uisrcnn_nonbn':
-        config = UISRCNN_NonBNConfig()
-        config.channels = args.channels
-        model = UISRCNN_NonBN_Model(config)
     elif args.model_type == 'uisrcnn_kso':
         config = UISRCNN_kso_Config()
         config.channels = args.channels
         model = UISRCNN_kso_Model(config)
     else:
         raise ValueError('Model type must be either "birnn", "seq2seq", '
-                         '"uisrcnn", "uisrcnn_nonbn", "uisrcnn_kso" or "srcnn".'
+                         '"uisrcnn", "uisrcnn_kso" or "srcnn".'
                          )
     return config, model
 
@@ -130,13 +125,21 @@ def run(config, model):
         high_resolution_prediction = np.insert(prediction, indices, low_resolution, axis=0).reshape((-1, 128, 1524))
         high_resolution_ground_truths = np.insert(truth, indices, low_resolution, axis=0).reshape((-1, 128, 1524))
 
+        # generate .npy and .mat files
+        # high_resolution_prediction and high_resolution_ground_truths are numpy array
+        # we load the original data PICMUS_EXP_CR_RF.mat, replace the 'rf_channels' data to generate the .mat files
         pred_filename = 'Prediction-{}'.format(config.model_prefix)
+        high_resolution_prediction_mat = sio.loadmat('PICMUS_EXP_CR_RF.mat')
+        high_resolution_ground_truths_mat = sio.loadmat('PICMUS_EXP_CR_RF.mat')
+        high_resolution_prediction_mat['rf_channels'] = high_resolution_prediction.transpose((2, 1, 0))
+        high_resolution_ground_truths_mat['rf_channels'] = high_resolution_ground_truths.transpose((2, 1, 0))
         np.save('tests/{}.npy'.format(pred_filename), high_resolution_prediction)
-        sio.savemat('tests/{}.mat'.format(pred_filename), {'data': high_resolution_prediction})
+        sio.savemat('tests/{}.mat'.format(pred_filename), high_resolution_prediction_mat)
         np.save('tests/Truths.npy', high_resolution_ground_truths)
-        sio.savemat('tests/Truths.mat', {'data': high_resolution_ground_truths})
+        sio.savemat('tests/Truths.mat', high_resolution_ground_truths_mat)
 
         print('MSE: {}, ER: {} %'.format(MSE, ER))
+
         """
         truth = np.load('tests/Truths.npy')
         pred = np.load('tests/{}.npy'.format(pred_filename))
@@ -145,6 +148,7 @@ def run(config, model):
         plt.legend(loc='upper left')
         plt.title(pred_filename, fontsize='large', fontweight='bold')
         plt.savefig('tests/{}.png'.format(pred_filename), dpi=300)
+        
         """
 
 
